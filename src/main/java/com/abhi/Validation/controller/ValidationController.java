@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequestMapping(value = "/validation",produces = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
 @Validated
-@Tag(name = "vaidation api",description = "it calls the formula and rule apis")
+@Tag(name = "validation api",description = "it calls the formula and rule apis")
 public interface ValidationController {
 
     @GetMapping("/{fileNumber}")

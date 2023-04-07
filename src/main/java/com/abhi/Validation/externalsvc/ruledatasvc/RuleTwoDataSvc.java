@@ -1,9 +1,11 @@
 package com.abhi.Validation.externalsvc.ruledatasvc;
 
+import com.abhi.Validation.dto.FileDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
@@ -12,36 +14,32 @@ import java.net.URI;
 
 @Component
 @Slf4j
-public class RuleRefDataSvc {
+public class RuleTwoDataSvc {
     @Autowired
     private WebClient.Builder webClientBuilder;
 
     private URI uri;
 
-
-    public RuleRefDataSvc() {
-        uri= UriComponentsBuilder.fromHttpUrl("http://localhost:9035/formula/").build().toUri();
-
+    public RuleTwoDataSvc() {
+        uri= UriComponentsBuilder.fromHttpUrl("http://localhost:9035/rule/ruleTwo").build().toUri();
     }
-
-    public FileDetailsDTO getByFileNumber(String fileNumber){
+    public FileDTO getByFileNumber(String fileNumber){
         WebClient webClient=webClientBuilder.build();
 
-        FileDetailsDTO fileDetailsDTO=webClient.get()
+        FileDTO fileDTO=webClient.get()
                 .uri(uri+fileNumber)
                 .exchangeToMono(
                         response->{
                             if(response.statusCode().is2xxSuccessful()){
-                                return  response.bodyToMono(FileDetailsDTO.class);
-                            }else if(response.statusCode().equals(HttpStatus.NOT_FOUND)){
+                                return response.bodyToMono(FileDTO.class);
+                            } else if (response.statusCode().equals(HttpStatus.NOT_FOUND)) {
                                 return Mono.empty();
                             }
                             else {
-                                return  response.createException().flatMap(Mono::error);
+                                return response.createException().flatMap(Mono::error);
                             }
-
                         }).block();
-        log.info("FileData get by fileNumber"+fileDetailsDTO);
-        return  fileDetailsDTO;
+        log.info("To get rule two FileData by fileNumber"+fileDTO);
+        return fileDTO;
     }
 }

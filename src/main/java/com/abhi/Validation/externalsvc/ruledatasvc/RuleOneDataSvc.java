@@ -1,4 +1,4 @@
-package com.abhi.Validation.externalsvc.formuladatasvc;
+package com.abhi.Validation.externalsvc.ruledatasvc;
 
 import com.abhi.Validation.dto.FileDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -13,21 +13,22 @@ import java.net.URI;
 
 @Component
 @Slf4j
-public class FormulaRefDataSvc {
+public class RuleOneDataSvc {
     @Autowired
     private WebClient.Builder webClientBuilder;
+
     private URI uri;
 
 
-    public FormulaRefDataSvc() {
-        uri= UriComponentsBuilder.fromHttpUrl("http://localhost:9034/formula").build().toUri();
+    public RuleOneDataSvc() {
+        uri= UriComponentsBuilder.fromHttpUrl("http://localhost:9035/rule/ruleOne").build().toUri();
 
     }
 
     public FileDTO getByFileNumber(String fileNumber){
         WebClient webClient=webClientBuilder.build();
 
-        FileDTO fileDataDTO=webClient.get()
+        FileDTO fileDTO=webClient.get()
                 .uri(uri+fileNumber)
                 .exchangeToMono(
                         response->{
@@ -41,8 +42,7 @@ public class FormulaRefDataSvc {
                             }
 
                         }).block();
-        log.info("FileData get by fileNumber"+fileDataDTO);
-        return  fileDataDTO;
+        log.info("To get rule one FileData by fileNumber"+fileDTO);
+        return  fileDTO;
     }
-
 }

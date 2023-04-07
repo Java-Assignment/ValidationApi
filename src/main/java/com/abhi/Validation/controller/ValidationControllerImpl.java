@@ -12,7 +12,7 @@ public class ValidationControllerImpl implements ValidationController{
 
     @Override
     public ResponseEntity<String> validate(String fileNumber) {
-        String  validated=validationService.Validate();
+        String  validated=validationService.CheckValidation(fileNumber);
         return new ResponseEntity<>(validated, HttpStatus.OK);
     }
 }
