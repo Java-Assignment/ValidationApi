@@ -1,6 +1,5 @@
 package com.abhi.Validation.externalsvc.ruledatasvc;
 
-import com.abhi.Validation.dto.FileDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,19 +20,19 @@ public class RuleOneDataSvc {
 
 
     public RuleOneDataSvc() {
-        uri= UriComponentsBuilder.fromHttpUrl("http://localhost:9035/rule/ruleOne").build().toUri();
+        uri= UriComponentsBuilder.fromHttpUrl("http://localhost:9035/rule/ruleOne/").build().toUri();
 
     }
 
-    public FileDTO getByFileNumber(String fileNumber){
+    public FileRuleDTO getByFileNumber(String fileNumber){
         WebClient webClient=webClientBuilder.build();
 
-        FileDTO fileDTO=webClient.get()
+        FileRuleDTO fileRuleDTO=webClient.get()
                 .uri(uri+fileNumber)
                 .exchangeToMono(
                         response->{
                             if(response.statusCode().is2xxSuccessful()){
-                                return  response.bodyToMono(FileDTO.class);
+                                return  response.bodyToMono(FileRuleDTO.class);
                             }else if(response.statusCode().equals(HttpStatus.NOT_FOUND)){
                                 return Mono.empty();
                             }
@@ -42,7 +41,7 @@ public class RuleOneDataSvc {
                             }
 
                         }).block();
-        log.info("To get rule one FileData by fileNumber"+fileDTO);
-        return  fileDTO;
+        log.info("To get rule one FileData by fileNumber"+fileRuleDTO);
+        return  fileRuleDTO;
     }
 }

@@ -1,6 +1,7 @@
 package com.abhi.Validation.controller;
 
 
+import com.abhi.Validation.exception.InvalidFileNumberException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotNull;
@@ -18,6 +19,6 @@ public interface ValidationController {
 
     @GetMapping("/{fileNumber}")
     @Operation(summary = "Get information about the given FileNumber")
-    ResponseEntity<String>validate(@PathVariable("fileNumber") @NotNull String fileNumber);
+    ResponseEntity<String>validate(@PathVariable("fileNumber") @NotNull String fileNumber) throws InvalidFileNumberException;
 
 }

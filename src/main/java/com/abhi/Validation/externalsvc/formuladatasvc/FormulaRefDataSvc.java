@@ -1,6 +1,5 @@
 package com.abhi.Validation.externalsvc.formuladatasvc;
 
-import com.abhi.Validation.dto.FileDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,19 +19,19 @@ public class FormulaRefDataSvc {
 
 
     public FormulaRefDataSvc() {
-        uri= UriComponentsBuilder.fromHttpUrl("http://localhost:9034/formula").build().toUri();
+        uri= UriComponentsBuilder.fromHttpUrl("http://localhost:9034/formula/").build().toUri();
 
     }
 
-    public FileDTO getByFileNumber(String fileNumber){
+    public FileFormulaDTO getByFileNumber(String fileNumber){
         WebClient webClient=webClientBuilder.build();
 
-        FileDTO fileDataDTO=webClient.get()
+        FileFormulaDTO fileFormulaDTO=webClient.get()
                 .uri(uri+fileNumber)
                 .exchangeToMono(
                         response->{
                             if(response.statusCode().is2xxSuccessful()){
-                                return  response.bodyToMono(FileDTO.class);
+                                return  response.bodyToMono(FileFormulaDTO.class);
                             }else if(response.statusCode().equals(HttpStatus.NOT_FOUND)){
                                 return Mono.empty();
                             }
@@ -41,8 +40,8 @@ public class FormulaRefDataSvc {
                             }
 
                         }).block();
-        log.info("FileData get by fileNumber"+fileDataDTO);
-        return  fileDataDTO;
+        log.info("FileData get by fileNumber"+fileFormulaDTO);
+        return  fileFormulaDTO;
     }
 
 }
