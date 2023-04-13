@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-
 public class ValidationControllerImpl implements ValidationController{
     private ValidationService validationService;
     public ValidationControllerImpl(ValidationService validationService) {

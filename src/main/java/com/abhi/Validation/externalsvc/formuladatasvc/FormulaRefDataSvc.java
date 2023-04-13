@@ -23,15 +23,15 @@ public class FormulaRefDataSvc {
 
     }
 
-    public FileFormulaDTO getByFileNumber(String fileNumber){
+    public FormulaDataDTO getByFileNumber(String fileNumber){
         WebClient webClient=webClientBuilder.build();
 
-        FileFormulaDTO fileFormulaDTO=webClient.get()
+        FormulaDataDTO formulaDataDTO =webClient.get()
                 .uri(uri+fileNumber)
                 .exchangeToMono(
                         response->{
                             if(response.statusCode().is2xxSuccessful()){
-                                return  response.bodyToMono(FileFormulaDTO.class);
+                                return  response.bodyToMono(FormulaDataDTO.class);
                             }else if(response.statusCode().equals(HttpStatus.NOT_FOUND)){
                                 return Mono.empty();
                             }
@@ -40,8 +40,8 @@ public class FormulaRefDataSvc {
                             }
 
                         }).block();
-        log.info("FileData get by fileNumber"+fileFormulaDTO);
-        return  fileFormulaDTO;
+        log.info("Get FileData by fileNumber"+ formulaDataDTO);
+        return formulaDataDTO;
     }
 
 }

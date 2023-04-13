@@ -24,15 +24,15 @@ public class RuleOneDataSvc {
 
     }
 
-    public FileRuleDTO getByFileNumber(String fileNumber){
+    public DataDTO RuleOneCheck(String fileNumber){
         WebClient webClient=webClientBuilder.build();
 
-        FileRuleDTO fileRuleDTO=webClient.get()
+        DataDTO dataDTO =webClient.get()
                 .uri(uri+fileNumber)
                 .exchangeToMono(
                         response->{
                             if(response.statusCode().is2xxSuccessful()){
-                                return  response.bodyToMono(FileRuleDTO.class);
+                                return  response.bodyToMono(DataDTO.class);
                             }else if(response.statusCode().equals(HttpStatus.NOT_FOUND)){
                                 return Mono.empty();
                             }
@@ -41,7 +41,7 @@ public class RuleOneDataSvc {
                             }
 
                         }).block();
-        log.info("To get rule one FileData by fileNumber"+fileRuleDTO);
-        return  fileRuleDTO;
+        log.info("The data fetched for the fileNumber is"+ dataDTO);
+        return dataDTO;
     }
 }

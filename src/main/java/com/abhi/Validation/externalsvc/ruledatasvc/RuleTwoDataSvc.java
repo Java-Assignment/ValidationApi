@@ -21,15 +21,15 @@ public class RuleTwoDataSvc {
     public RuleTwoDataSvc() {
         uri= UriComponentsBuilder.fromHttpUrl("http://localhost:9035/rule/ruleTwo/").build().toUri();
     }
-    public FileRuleDTO getByFileNumber(String fileNumber){
+    public DataDTO RuleTwoCheck(String fileNumber){
         WebClient webClient=webClientBuilder.build();
 
-        FileRuleDTO fileDTO=webClient.get()
+        DataDTO fileDTO=webClient.get()
                 .uri(uri+fileNumber)
                 .exchangeToMono(
                         response->{
                             if(response.statusCode().is2xxSuccessful()){
-                                return response.bodyToMono(FileRuleDTO.class);
+                                return response.bodyToMono(DataDTO.class);
                             } else if (response.statusCode().equals(HttpStatus.NOT_FOUND)) {
                                 return Mono.empty();
                             }
@@ -37,7 +37,7 @@ public class RuleTwoDataSvc {
                                 return response.createException().flatMap(Mono::error);
                             }
                         }).block();
-        log.info("To get rule two FileData by fileNumber"+fileDTO);
+        log.info("The data fetched for the fileNumber i"+fileDTO);
         return fileDTO;
     }
 }
